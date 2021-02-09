@@ -1,0 +1,12 @@
+body {
+    background-color: darksalmon;
+}
+
+h1{
+    text-align: center;
+}
+
+.cards{
+border: 2px solid black;
+background-color: lightsalmon;
+}
