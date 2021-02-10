@@ -23,7 +23,8 @@ const db = require("./models");
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitnasty", {
 useNewUserParser: true,
 useFindandModify: false,
-useUnifiedTopology: true
+useUnifiedTopology: true,
+useCreateIndex: true
 });
 
 //starter route
