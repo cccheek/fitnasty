@@ -148,6 +148,17 @@ db.Workout.create(body)
 })
 })
 
+app.post("/api/exercises", (req, res) =>{
+    console.log(req.body)
+    db.Exercise.create(req.body)
+    .then(dbExercise =>{
+        db.Workout.findOneAndUpdate({_id:req.body.id}, {$push: {exercises: dbExercise._id}})
+        .then(dbWorkout => res.send(dbWorkout))
+    })
+    .catch( err => res.json(err))
+    
+})
+
 
 
 app.listen(PORT, function(){
