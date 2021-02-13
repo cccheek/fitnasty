@@ -12,7 +12,7 @@ app.use(compression());
 app.use(logger("dev"));
 
 //set up express app
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'))
 
@@ -21,10 +21,10 @@ const db = require("./models");
 
 //connecting to mongodb
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitnasty", {
-useNewUserParser: true,
-useFindandModify: false,
-useUnifiedTopology: true,
-useCreateIndex: true
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+    useCreateIndex: true
 });
 
 //starter route
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 })
 
 //seed data
-const seedWorkout =[
+const seedExercises = [
     {
         name: "yoga",
         kind: "stretch",
@@ -62,105 +62,106 @@ const seedWorkout =[
         cardio: false,
         duration: 30
     }
-   
+
 ]
 app.get("/seed", (req, res) => {
-    db.Exercise.create(seedWorkout)
-    .then(result => {
-        console.log(result)
-        db.Workout.create([
-            {
-                name: "workout 1",
-                exercises: [
-                    result[Math.floor(Math.random()* result.length)]._id
-                ]
-            },
-            {
-                name: "workout 2",
-                exercises: [
-                    result[Math.floor(Math.random()* result.length)]._id
-                ]
-            },
-            {
-                name: "workout 3",
-                exercises: [
-                    result[Math.floor(Math.random()* result.length)]._id
-                ]
-            },
-        ])
-        .then(fullRes => {
-            res.send(fullRes)
+    db.Exercise.create(seedExercises)
+        .then(result => {
+            console.log(result)
+            db.Workout.create([
+                {
+                    name: "workout 1",
+                    exercises: [
+                        result[Math.floor(Math.random() * result.length)]._id
+                    ]
+                },
+                {
+                    name: "workout 2",
+                    exercises: [
+                        result[Math.floor(Math.random() * result.length)]._id
+                    ]
+                },
+                {
+                    name: "workout 3",
+                    exercises: [
+                        result[Math.floor(Math.random() * result.length)]._id
+                    ]
+                },
+            ])
+                .then(fullRes => {
+                    res.send(fullRes)
+                })
+                .catch(err => {
+                    res.send(err)
+                })
         })
         .catch(err => {
             res.send(err)
         })
-    })
-    .catch(err => {
-        res.send(err)
-    })
 })
 
 
 
-app.get('/api/exercise', (req, res) => {
+app.get('/api/exercises', (req, res) => {
     db.Exercise.find({})
-    .then(dbExercise => {
-        res.json(dbExercise)
-    })
-    .catch(err =>{
-        console.log(err)
-        res.send(err)
-    })
+        .then(dbExercises => {
+            res.json(dbExercises)
+        })
+        .catch(err => {
+            console.log(err)
+            res.send(err)
+        })
 })
 
-app.get('/api/workout', (req, res) => {
+app.get('/api/workouts', (req, res) => {
     db.Workout.find({})
-    .then(dbWorkout => {
-        res.json(dbWorkout)
-    })
-    .catch(err =>{
-        console.log(err)
-        res.send(err)
-    })
+        .then(dbWorkout => {
+            res.json(dbWorkout)
+        })
+        .catch(err => {
+            console.log(err)
+            res.send(err)
+        })
 })
 
-app.get('/populateexercise', (req, res) => {
+app.get('/populatedexercises', (req, res) => {
     db.Workout.find({})
-    .populate('exercise')
-    .then(dbWorkout => {
-        res.json(dbWorkout)
-    })
-    .catch(err =>{
-        console.log(err)
-        res.send(err)
-    })
+        .populate('exercises')
+        .then(dbWorkout => {
+            res.json(dbWorkout)
+        })
+        .catch(err => {
+            console.log(err)
+            res.send(err)
+        })
 })
 
 
 app.post("/api/workouts", ({ body }, res) => {
-db.Workout.create(body)
-.then(dbWorkout => {
-    res.json(dbWorkout)
-})
-.catch(err =>{
-    console.log(err)
-    res.send(err)
-})
+    db.Workout.create(body)
+        .then(dbWorkout => {
+            res.json(dbWorkout)
+        })
+        .catch(err => {
+            console.log(err)
+            res.send(err)
+        })
 })
 
-app.post("/api/exercises", (req, res) =>{
+app.post("/api/exercises", (req, res) => {
     console.log(req.body)
+
     db.Exercise.create(req.body)
-    .then(dbExercise =>{
-        db.Workout.findOneAndUpdate({_id:req.body.id}, {$push: {exercises: dbExercise._id}})
-        .then(dbWorkout => res.send(dbWorkout))
-    })
-    .catch( err => res.json(err))
-    
+        .then(dbExercise => {
+            db.Workout.findOneAndUpdate({ _id: req.body.id }, { $push: { exercises: dbExercise._id } })
+                .then(dbWorkout => res.send(dbWorkout))
+        })
+        .catch(err => res.json(err))
+
 })
 
 
 
-app.listen(PORT, function(){
-    console.log("We hear ya on " +PORT);
+app.listen(PORT, function () {
+    console.log("We hear ya on " + PORT);
 });
