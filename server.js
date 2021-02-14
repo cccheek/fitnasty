@@ -29,76 +29,75 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/fitnasty", {
 
 //starter route
 app.get("/", (req, res) => {
-    // res.send("oh heyyy");
     res.sendFile('./index.html');
 })
 
-//seed data
-const seedExercises = [
-    {
-        name: "yoga",
-        kind: "stretch",
-        weight: 0,
-        reps: 0,
-        sets: 0,
-        cardio: false,
-        duration: 30
-    },
-    {
-        name: "running",
-        kind: "outside",
-        weight: 0,
-        reps: 0,
-        sets: 0,
-        cardio: true,
-        duration: 30
-    },
-    {
-        name: "bicep curls",
-        kind: "easy",
-        weight: 15,
-        reps: 10,
-        sets: 4,
-        cardio: false,
-        duration: 30
-    }
+// //seed data
+// const seedExercises = [
+//     {
+//         name: "yoga",
+//         kind: "stretch",
+//         weight: 0,
+//         reps: 0,
+//         sets: 0,
+//         cardio: false,
+//         duration: 30
+//     },
+//     {
+//         name: "running",
+//         kind: "outside",
+//         weight: 0,
+//         reps: 0,
+//         sets: 0,
+//         cardio: true,
+//         duration: 30
+//     },
+//     {
+//         name: "bicep curls",
+//         kind: "easy",
+//         weight: 15,
+//         reps: 10,
+//         sets: 4,
+//         cardio: false,
+//         duration: 30
+//     }
 
-]
-app.get("/seed", (req, res) => {
-    db.Exercise.create(seedExercises)
-        .then(result => {
-            console.log(result)
-            db.Workout.create([
-                {
-                    name: "workout 1",
-                    exercises: [
-                        result[Math.floor(Math.random() * result.length)]._id
-                    ]
-                },
-                {
-                    name: "workout 2",
-                    exercises: [
-                        result[Math.floor(Math.random() * result.length)]._id
-                    ]
-                },
-                {
-                    name: "workout 3",
-                    exercises: [
-                        result[Math.floor(Math.random() * result.length)]._id
-                    ]
-                },
-            ])
-                .then(fullRes => {
-                    res.send(fullRes)
-                })
-                .catch(err => {
-                    res.send(err)
-                })
-        })
-        .catch(err => {
-            res.send(err)
-        })
-})
+// ]
+// app.get("/seed", (req, res) => {
+//     db.Exercise.create(seedExercises)
+//         .then(result => {
+//             console.log(result)
+//             db.Workout.create([
+//                 {
+//                     name: "workout 1",
+//                     exercises: [
+//                         result[Math.floor(Math.random() * result.length)]._id
+//                     ]
+//                 },
+//                 {
+//                     name: "workout 2",
+//                     exercises: [
+//                         result[Math.floor(Math.random() * result.length)]._id
+//                     ]
+//                 },
+//                 {
+//                     name: "workout 3",
+//                     exercises: [
+//                         result[Math.floor(Math.random() * result.length)]._id
+//                     ]
+//                 },
+//             ])
+//                 .then(fullRes => {
+//                     res.send(fullRes)
+//                 })
+//                 .catch(err => {
+//                     res.send(err)
+//                 })
+//         })
+//         .catch(err => {
+//             res.send(err)
+//         })
+// })
 
 
 
