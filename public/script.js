@@ -1,6 +1,5 @@
 
 function renderExercisePlans() {
-    console.log("hello")
     $("#workouts").empty();
     $.ajax({
         url: "/populatedexercises",
@@ -8,7 +7,7 @@ function renderExercisePlans() {
     })
         .then(dbData => {
             // console.log(dbData)
-            dbData.each(plan => {
+            dbData.forEach(plan => {
                 console.log(plan)
                 //make a new div each workout
                 const newDiv = $("<div>", {
@@ -22,8 +21,8 @@ function renderExercisePlans() {
 
 
                 //loop through exercise and print each
-                plan.exercises.each(exercise => {
-                    console.log(exercises)
+                plan.exercises.forEach(exercise => {
+                    console.log(exercise)
                     const newLi = $("<li>", {
                         text: `Name ${exercise.name}\nKind: ${exercise.kind}\nWeight: ${exercise.weight}\nReps: ${exercise.reps}\nSets: ${exercise.sets}\nCardio: ${exercise.cardio ? "Yes" : "No"}\nDuration: ${exercise.duration}`
                     })
@@ -63,7 +62,7 @@ function renderExercisePlans() {
                 })
                 const repsInput = $("<input>", {
                     type: "number",
-                    id: `reps-${pan._id}`
+                    id: `reps-${plan._id}`
                 })
                 const setsLabel = $("<label>", {
                     for: `sets-${plan._id}`,
@@ -107,8 +106,7 @@ function renderExercisePlans() {
                     .append(newBtn)
                 newDiv.append(newUl).append(newForm);
 
-
-                $("#workouts").append(newDiv);
+                $("#workouts").append(newDiv)
             })
         })
 }

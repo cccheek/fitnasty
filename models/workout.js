@@ -8,7 +8,7 @@ const WorkoutSchema = new Schema({
         type: String,
         required: "What kind of exercise did you do today?"
     },
-    Exercise: [
+    exercises: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Exercise'
